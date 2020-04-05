@@ -7,6 +7,7 @@ import Input from '../components/Input';
 const GamebeginScreen = props => {
 
     const [valueInput, setvalueInput] = useState('')
+    const [show, setshow] = useState(false)
 
     const inputHandler = (number) => {
         setvalueInput(number.replace(/[^0-9]/g, ''))
@@ -14,6 +15,11 @@ const GamebeginScreen = props => {
 
     const resetHandler = () => {
         setvalueInput('')
+        setshow(false)
+    }
+
+    const confirmHandler = () => {
+        setshow(true)
     }
     return (
         <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
@@ -25,9 +31,10 @@ const GamebeginScreen = props => {
            <Input onChangeText={inputHandler} value={valueInput} style={styles.textfield} blurOnSubmit keyboardType="number-pad" maxLength={2} /> 
            <View style={styles.btnview}>
               <View style={styles.btn} ><Button onPress={resetHandler} title="reset" color="#c717fc" ></Button></View> 
-              <View style={styles.btn} ><Button onPress={() => {}} title="confirm" color="#f7287e" ></Button></View>
+              <View style={styles.btn} ><Button onPress={confirmHandler} title="confirm" color="#f7287e" ></Button></View>
            </View>
-           </Card>           
+           </Card>
+           {show ? <View style={{marginTop: 10}}><Card><Text style={{color: 'yellowgreen', fontSize: 36}}>{valueInput}</Text></Card></View> : null}           
         </View>
         </TouchableWithoutFeedback>
     )
