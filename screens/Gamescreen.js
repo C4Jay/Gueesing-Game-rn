@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { View, Text, StyleSheet, Button } from 'react-native';
+import React, { useState, useRef } from 'react'
+import { View, Text, StyleSheet, Button, Alert} from 'react-native';
 import Card from '../components/Card';
 
 const genRandomBetween = (min, max, exclude) => {
@@ -17,6 +17,36 @@ const genRandomBetween = (min, max, exclude) => {
 const GameScreen = (props) => {
     const [currentGuess, setcurrentGuess] = useState(genRandomBetween(1, 100, props.userChoice)) 
 
+    const currentlow = useRef(1)
+    const currenthigh = useRef(100)
+
+    const [GameFinished, setGameFinished] = useState(false)
+
+    const nextGuessHandler = direc => {
+        if(currentGuess == props.userChoice) {
+            setGameFinished(true)
+        }
+        if((direc === 'lower' && currentGuess < props.userChoice) || 
+        (direc === 'higher' && currentGuess > props.userChoice)){
+            Alert.alert('Don`t cheat','Wrong input',[{text: 'sorry', style: 'cancel'}])
+            return
+        }
+        if(direc === 'lower') {
+            currenthigh.current = currentGuess
+        } else {
+            currentlow.current = currentGuess
+        }
+        const nextnumber = genRandomBetween(currentlow.current, currenthigh.current, currentGuess)
+        setcurrentGuess(nextnumber)
+        
+    }
+
+    let overscreen = null;
+
+    if(currentGuess == props.userChoice) {
+        overscreen = <View style={styles.finishscreen}><Card><Text style={{fontSize: 28}}>Game Finished :)</Text></Card></View>
+    }
+
     return (
         <View style={styles.screen}>
             
@@ -24,10 +54,14 @@ const GameScreen = (props) => {
              <Text style={{fontSize: 28}} >{currentGuess}</Text>
              </View>
              <Card style={styles.btnview}>
-                 <Button title="lower" onPress={() => {}}></Button>
-                 <Button title="higher" onPress={() => {}}></Button>
+                 <Button title="lower" onPress={nextGuessHandler.bind(this, 'lower')/* nextGuessHandler('lower') */}></Button>
+                 <Button title="higher" onPress={nextGuessHandler.bind(this, 'higher')/* nextGuessHandler('higher') */}></Button>
              </Card>
-            
+
+             <Card style={styles.btnprev}>
+                 <Button onPress={props.prev} title="back"></Button>
+             </Card>
+            {overscreen}
         </View>
     )
 
@@ -57,6 +91,15 @@ const styles = StyleSheet.create({
         maxWidth: '80%',
         flexDirection: 'row',
         justifyContent: 'space-around'
+    },
+    btnprev: {
+        marginTop: 8,
+        width: 129,
+        borderRadius: 3
+    },
+    finishscreen: {
+        marginTop: 8,
+        fontSize: 28
     }
 })
 

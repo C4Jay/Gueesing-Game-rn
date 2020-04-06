@@ -12,10 +12,14 @@ export default function App() {
     setnumUser(numPicked);
   }
 
+  const resetHandler = () => {
+    setnumUser()
+  }
+
   let content = <GamebeginScreen onStartGame={beginGameHandler}></GamebeginScreen>
   
   if(numUser) {
-    content = <GameScreen userChoice={numUser}></GameScreen>
+    content = <GameScreen prev={resetHandler} userChoice={numUser}></GameScreen>
   } 
 
   return (
