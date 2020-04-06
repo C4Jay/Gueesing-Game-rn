@@ -34,6 +34,7 @@ const GamebeginScreen = props => {
         setuserconfirm(true)
         setnumPicked(parseInt(valueInput))
         setvalueInput('')
+        Keyboard.dismiss()
     }
 
     let confirmedCheck;
@@ -65,7 +66,7 @@ const GamebeginScreen = props => {
              <Text style={{fontSize: 28}} >{numPicked}</Text>
              </View>
              <View style={styles.btn}>
-             <Button color="yellowgreen" title="next"></Button>
+             <Button onPress={() => {props.onStartGame(numPicked)}} color="yellowgreen" title="next"></Button>
              </View>
              </Card>
              </View> 
@@ -126,7 +127,8 @@ const styles = StyleSheet.create({
         height: 68,
         borderRadius: 6,
         fontSize: 38,
-        alignItems: 'center'
+        alignItems: 'center',
+        
 
     }
 })
