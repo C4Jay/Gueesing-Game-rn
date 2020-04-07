@@ -1,6 +1,7 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { View, Text, StyleSheet, Button, Alert} from 'react-native';
 import Card from '../components/Card';
+import GameFinishedScreen from './GamefinishedScreen';
 
 const genRandomBetween = (min, max, exclude) => {
     min = Math.ceil(min);
@@ -16,16 +17,21 @@ const genRandomBetween = (min, max, exclude) => {
 
 const GameScreen = (props) => {
     const [currentGuess, setcurrentGuess] = useState(genRandomBetween(1, 100, props.userChoice)) 
+    const [counter, setcounter] = useState(0)
 
     const currentlow = useRef(1)
     const currenthigh = useRef(100)
 
+
+    
+
     const [GameFinished, setGameFinished] = useState(false)
 
     const nextGuessHandler = direc => {
-        if(currentGuess == props.userChoice) {
+        /* if(currentGuess == props.userChoice) {
             setGameFinished(true)
-        }
+        } */
+        setcounter(counter + 1)
         if((direc === 'lower' && currentGuess < props.userChoice) || 
         (direc === 'higher' && currentGuess > props.userChoice)){
             Alert.alert('Don`t cheat','Wrong input',[{text: 'sorry', style: 'cancel'}])
@@ -44,7 +50,7 @@ const GameScreen = (props) => {
     let overscreen = null;
 
     if(currentGuess == props.userChoice) {
-        overscreen = <View style={styles.finishscreen}><Card><Text style={{fontSize: 28}}>Game Finished :)</Text></Card></View>
+        overscreen = <View style={{marginTop: 8}}><GameFinishedScreen count={counter}></GameFinishedScreen></View>
     }
 
     return (
