@@ -63,11 +63,11 @@ const GameScreen = (props) => {
                  <Button title="lower" onPress={nextGuessHandler.bind(this, 'lower')/* nextGuessHandler('lower') */}></Button>
                  <Button title="higher" onPress={nextGuessHandler.bind(this, 'higher')/* nextGuessHandler('higher') */}></Button>
              </Card>
-
-             <Card style={styles.btnprev}>
-                 <Button onPress={props.prev} title="back"></Button>
-             </Card>
-            {overscreen}
+             {overscreen}
+             <Card style={styles.btnprev}> 
+                <Button onPress={props.prev} title="back"></Button>
+            </Card> 
+            
         </View>
     )
 
@@ -101,7 +101,8 @@ const styles = StyleSheet.create({
     btnprev: {
         marginTop: 8,
         width: 129,
-        borderRadius: 3
+        borderRadius: 3,
+        padding: 0
     },
     finishscreen: {
         marginTop: 8,
